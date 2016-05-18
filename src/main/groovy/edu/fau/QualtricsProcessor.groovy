@@ -17,9 +17,9 @@ class QualtricsProcessor {
 
 
     def run(def cli, def options) {
-        Organization organization = new Organization("fau")
+        Users users = new Users()
         (0..10).each {
-            println organization.getOrganizationJson()
+            println users.getUserToken("UR_2u7WmfdCEWLDB5z")
         }
 
     }

@@ -27,17 +27,17 @@ import static groovyx.net.http.Method.GET
  * Time: 10:25 PM
  *
  */
-class Organization {
+class Users {
     RESTPaths paths
     HttpClient httpClient
     CompositeConfiguration config
     def data
-    String organizationId
+    String userId
     Date flushCacheTime
     int flushCacheInMilliseconds
     String token
 
-    Organization(String organizationId, String token = null) {
+    Users(String token = null) {
         try {
             config = ConfigurationManager.getConfig()
         }
@@ -46,26 +46,31 @@ class Organization {
             println "Error loading config: " + e.message
         }
 
-//        config.getString("qualtrics.baseURL", "https://fau.qualtrics.com")
-//        config.getString("qualtrics.token")
         paths = new RESTPaths()
         httpClient = new HttpClient(config.getString("qualtrics.baseURL", "https://fau.qualtrics.com"))
-        this.organizationId = organizationId
+        this.userId = userId
         flushCacheInMilliseconds = config.getInt("qualtrics.organization.cache.flush.milliseconds", 1000)
         flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds * -1) // force flush on load
         this.token = token ?: config.getString("qualtrics.token")
     }
 
-    def getOrganizationJson() {
-        hydrate()
+    def getUserToken(String userId) {
+        if(this.userId != userId) {
+            this.userId = userId
+            hydrateUserAPIToken(true)
+        }
+        else {
+            hydrateUserAPIToken(false)
+        }
 
-        return data
+
+        return data?.result?.apiToken
     }
 
-    private void hydrate() {
+    private void hydrateUserAPIToken(boolean forceFlush) {
         Date now = new Date()
-        if(now.after(flushCacheTime)) {
-            def path = paths.getPath("organizations", [":userId": organizationId])
+        if(now.after(flushCacheTime) || forceFlush) {
+            def path = paths.getPath("user.api.token", [":userId": userId])
             data = httpClient.http.request(GET) { req ->
                 uri.path = path
                 headers['X-API-TOKEN'] = token

@@ -41,6 +41,7 @@ class RESTPaths {
         baseUrl = config.getString("qualtrics.baseURL", "https://fau.qualtrics.com")
 
         paths["organizations"] = basePath + "/v3/organizations/:organizationId"
+        paths["user.api.token"] = basePath + "/v3/users/:userId/apitoken"
 
     }
 
