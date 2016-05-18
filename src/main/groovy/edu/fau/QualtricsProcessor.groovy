@@ -17,18 +17,25 @@ class QualtricsProcessor {
 
 
     def run(def cli, def options) {
-        Organization organization = new Organization("fau")
-        (0..10).each {
-            println organization.getOrganizationJson()
-//            println organization.stats
-        }
+//        Organization organization = new Organization("fau")
+//        (0..10).each {
+//            println organization.getOrganizationJson()
+////            println organization.stats
+//        }
 ////        Users users = new Users()
 ////        (0..10).each {
 ////            println users.getUserToken("UR_2u7WmfdCEWLDB5z")
 ////        }
 
-//        Users users = new Users()
-//
+        Users users = new Users()
+
+        users.findAll {it.divisionId == 'DV_cCH5INYYqODTYix' }.each {
+            println it
+        }
+
+        def user = users.findAll {it.username == 'jloiacon' && it.firstName=='Joseph'}.first()
+        println user
+
 //        users.each {
 //            println it
 //        }

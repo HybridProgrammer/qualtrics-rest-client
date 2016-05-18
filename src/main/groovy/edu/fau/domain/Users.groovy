@@ -59,6 +59,7 @@ class Users {
     def index = 0
     Iterator iterator() {
         index = 0
+        users.clear()
         return [hasNext: {
             index < users.size() || nextPage || (!nextPage && index == users.size() && index == 0)
         }, next: {
