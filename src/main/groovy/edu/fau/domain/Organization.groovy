@@ -3,6 +3,7 @@ package edu.fau.domain
 import edu.fau.services.ConfigurationManager
 import edu.fau.services.HttpClient
 import org.apache.commons.configuration.CompositeConfiguration
+import org.apache.commons.lang.time.DateUtils
 
 import static groovyx.net.http.Method.GET
 
@@ -32,6 +33,9 @@ class Organization {
     CompositeConfiguration config
     def data
     String organizationId
+    Date flushCacheTime
+    int flushCacheInMilliseconds
+
 
     Organization(String organizationId) {
         try {
@@ -47,6 +51,8 @@ class Organization {
         paths = new RESTPaths()
         httpClient = new HttpClient(config.getString("qualtrics.baseURL", "https://fau.qualtrics.com"))
         this.organizationId = organizationId
+        flushCacheInMilliseconds = config.getInt("qualtrics.organization.cache.flush.milliseconds", 1000)
+        flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds * -1) // force flush on load
     }
 
     def getOrganizationJson() {
@@ -56,12 +62,16 @@ class Organization {
     }
 
     private void hydrate() {
-        def path = paths.getPath("organizations", [":organizationId": organizationId])
-        data = httpClient.http.request(GET) { req ->
-            uri.path = path
-            headers['X-API-TOKEN'] = config.getString("qualtrics.token")
+        Date now = new Date()
+        if(now.after(flushCacheTime)) {
+            def path = paths.getPath("organizations", [":organizationId": organizationId])
+            data = httpClient.http.request(GET) { req ->
+                uri.path = path
+                headers['X-API-TOKEN'] = config.getString("qualtrics.token")
 
-            response.success = httpClient.success
+                response.success = httpClient.success
+            }
+            flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds)
         }
     }
 }

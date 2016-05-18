@@ -18,7 +18,10 @@ class QualtricsProcessor {
 
     def run(def cli, def options) {
         Organization organization = new Organization("fau")
-        println organization.getOrganizationJson()
+        (0..10).each {
+            println organization.getOrganizationJson()
+        }
+
     }
 
 
