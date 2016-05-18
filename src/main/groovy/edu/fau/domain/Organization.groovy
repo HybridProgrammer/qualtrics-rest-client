@@ -33,8 +33,7 @@ class Organization {
     CompositeConfiguration config
     def data
     String organizationId
-    Date flushCacheTime
-    int flushCacheInMilliseconds
+    CacheStats cacheStats
     String token
 
     String baseUrl
@@ -60,8 +59,7 @@ class Organization {
         paths = new RESTPaths()
         httpClient = new HttpClient(config.getString("qualtrics.baseURL", "https://fau.qualtrics.com"))
         this.organizationId = organizationId
-        flushCacheInMilliseconds = config.getInt("qualtrics.organization.cache.flush.milliseconds", 1000)   // 1 second
-        flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds * -1) // force flush on load
+        cacheStats = new CacheStats("qualtrics.organization.cache.flush.milliseconds")
         this.token = token ?: config.getString("qualtrics.token")
     }
 
@@ -140,7 +138,7 @@ class Organization {
 
     private void hydrate() {
         Date now = new Date()
-        if(now.after(flushCacheTime)) {
+        if(cacheStats.hasExpired()) {
             def path = paths.getPath("organizations", [":organizationId": organizationId])
             data = httpClient.http.request(GET) { req ->
                 uri.path = path
@@ -148,7 +146,7 @@ class Organization {
 
                 response.success = httpClient.success
             }
-            flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds)
+            cacheStats.updateFlashCacheTime()
 
             if(data) {
                 hydrateData(data?.result)

@@ -12,7 +12,7 @@ class CacheStats {
     int flushCacheInMilliseconds
     CompositeConfiguration config
 
-    CacheStats() {
+    CacheStats(String configName = null) {
         try {
             config = ConfigurationManager.getConfig()
         }
@@ -21,7 +21,12 @@ class CacheStats {
             println "Error loading config: " + e.message
         }
 
-        flushCacheInMilliseconds = config.getInt("qualtrics.cache.flush.milliseconds", 1000)   // 1 second
+        if(configName) {
+            flushCacheInMilliseconds = config.getInt(configName, 1000)   // 1 second
+        }
+        else {
+            flushCacheInMilliseconds = config.getInt("qualtrics.cache.flush.milliseconds", 1000)   // 1 second
+        }
         flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds * -1) // force flush on load
 
     }
