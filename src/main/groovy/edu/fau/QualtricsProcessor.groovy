@@ -27,19 +27,26 @@ class QualtricsProcessor {
 ////            println users.getUserToken("UR_2u7WmfdCEWLDB5z")
 ////        }
 
-        Users users = new Users()
+//        Users users = new Users()
 
 //        users.findAll {it.divisionId == 'DV_cCH5INYYqODTYix' }.each {
 //            println it
 //        }
 
-        User user = (User) users.findAll {it.username == 'jloiacon' && it.firstName=='Joseph'}.first()
-        println user
-
-        def user2 = users.getUser(user.id)
-        println user2
+//        User user = (User) users.findAll {it.username == 'jloiacon' && it.firstName=='Joseph'}.first()
+//        println user
+//
+//        def user2 = users.getUser(user.id)
+//        println user2
 
 //        users.each {
+//            println it
+//        }
+
+
+
+//        Distributions distributions = new Distributions()
+//        distributions.each {
 //            println it
 //        }
 

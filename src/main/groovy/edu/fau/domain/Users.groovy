@@ -55,7 +55,6 @@ class Users {
 
         paths = new RESTPaths()
         httpClient = new HttpClient(config.getString("qualtrics.baseURL", "https://fau.qualtrics.com"))
-        this.userId = userId
         this.token = token ?: config.getString("qualtrics.token")
     }
 
@@ -94,7 +93,6 @@ class Users {
     }
 
     private void hydrateUser(String userId) {
-        Date now = new Date()
         if (cacheUser.hasExpired()) {
             def path = paths.getPath("user.get", [":userId": userId])
             data = httpClient.http.request(GET) { req ->

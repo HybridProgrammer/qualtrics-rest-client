@@ -44,6 +44,8 @@ class RESTPaths {
         paths["user.api.token"] = basePath + "/v3/users/:userId/apitoken"
         paths["user.list"] = basePath + "/v3/users"
         paths["user.get"] = basePath + "/v3/users/:userId"
+        paths["distribution.list"] = basePath + "/v3/distributions"
+        paths["distribution.get"] = basePath + "/v3/distributions/:distributionId"
 
     }
 
