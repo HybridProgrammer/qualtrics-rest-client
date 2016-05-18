@@ -37,6 +37,15 @@ class Organization {
     int flushCacheInMilliseconds
     String token
 
+    String baseUrl
+    String httpStatus
+    Date createDate
+    Date expireationDate
+    String id
+    String name
+    Stats stats
+
+
     Organization(String organizationId, String token = null) {
         try {
             config = ConfigurationManager.getConfig()
@@ -58,6 +67,7 @@ class Organization {
 
     def getOrganizationJson() {
         hydrate()
+        stats = new Stats(data?.result?.stats)
 
         return data
     }
