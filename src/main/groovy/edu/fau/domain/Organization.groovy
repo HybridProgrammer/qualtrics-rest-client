@@ -51,7 +51,7 @@ class Organization {
         paths = new RESTPaths()
         httpClient = new HttpClient(config.getString("qualtrics.baseURL", "https://fau.qualtrics.com"))
         this.organizationId = organizationId
-        flushCacheInMilliseconds = config.getInt("qualtrics.organization.cache.flush.milliseconds", 1000)
+        flushCacheInMilliseconds = config.getInt("qualtrics.organization.cache.flush.milliseconds", 1000)   // 1 second
         flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds * -1) // force flush on load
         this.token = token ?: config.getString("qualtrics.token")
     }
