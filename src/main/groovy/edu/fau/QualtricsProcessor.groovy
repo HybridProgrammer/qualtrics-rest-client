@@ -43,12 +43,18 @@ class QualtricsProcessor {
 //            println it
 //        }
 
+        Survey survey
+        Surveys surveys = new Surveys()
+        surveys.each {
+            println it
+            survey = it
+        }
 
-
-//        Distributions distributions = new Distributions()
-//        distributions.each {
-//            println it
-//        }
+        println "Distributions for " + survey
+        Distributions distributions = new Distributions(survey.id)
+        distributions.each {
+            println it
+        }
 
 
 

@@ -9,22 +9,21 @@ import static groovyx.net.http.Method.GET
 /**
  * Created by jason on 5/18/16.
  */
-class Distributions {
+class Surveys {
     RESTPaths paths
     HttpClient httpClient
     String httpStatus
     CompositeConfiguration config
     def data
-    CacheStats cacheDistributions = new CacheStats()
-    CacheStats cacheDistribution = new CacheStats()
+    CacheStats cacheSurveys = new CacheStats()
+    CacheStats cacheSurvey = new CacheStats()
     String token
     String nextPage
-    String surveyId
 
-    def distributions = []
-    def distribution
+    def surveys = []
+    def survey
 
-    Distributions(String surveyId, String token = null) {
+    Surveys(String token = null) {
         try {
             config = ConfigurationManager.getConfig()
         }
@@ -36,18 +35,19 @@ class Distributions {
         paths = new RESTPaths()
         httpClient = new HttpClient(config.getString("qualtrics.baseURL", "https://fau.qualtrics.com"))
         this.token = token ?: config.getString("qualtrics.token")
-        this.surveyId = surveyId
     }
 
     def index = 0
     Iterator iterator() {
         index = 0
-        distributions.clear()
+        surveys.clear()
         return [hasNext: {
-            index < distributions.size() || nextPage || (!nextPage && index == distributions.size() && index == 0 && hydrateDistributions(true))
+            index < surveys.size() || nextPage || (!nextPage && index == surveys.size() && index == 0)
         }, next: {
-            if(index >= distributions.size()) {
-                if(nextPage || (index == distributions.size() && index == 0)) {
+            if(index >= surveys.size()) {
+                if(nextPage || (index == surveys.size() && index == 0)) {
+                    surveys.clear()
+                    hydrateSurveys(true)
                     index = 0
                 }
                 else {
@@ -55,61 +55,59 @@ class Distributions {
                 }
             }
 
-            distributions[index++]
+            surveys[index++]
 
         }] as Iterator
     }
 
-    def getDistribution(String distributionId) {
-        hydrateDistribution(distributionId)
+    def getSurvey(String surveyId) {
+        hydrateSurvey(surveyId)
 
-        return distribution
+        return survey
     }
 
-    private void hydrateDistributionData(Map map) {
-        Distribution distribution = new Distribution(map)
-        this.distribution = distribution
+    private void hydrateSurveyData(Map map) {
+        Survey survey = new Survey(map)
+        this.survey = survey
     }
 
-    private void hydrateDistribution(String distributionId) {
-        if (cacheDistribution.hasExpired()) {
-            def path = paths.getPath("distribution.get", [":distributionId": distributionId])
+    private void hydrateSurvey(String surveyId) {
+        if (cacheSurvey.hasExpired()) {
+            def path = paths.getPath("survey.get", [":surveyId": surveyId])
             data = httpClient.http.request(GET) { req ->
                 uri.path = path
                 headers['X-API-TOKEN'] = token
 
                 response.success = httpClient.success
             }
-            cacheDistribution.updateFlashCacheTime()
+            cacheSurvey.updateFlashCacheTime()
 
             if (data) {
-                hydrateDistributionData(data?.result)
+                hydrateSurveyData(data?.result)
                 this.httpStatus = data?.httpStatus
             }
         }
     }
 
-    private void hydreateDistributionsData(def map) {
+    private void hydreateSurveysData(def map) {
         map?.elements.each {
-            Distribution distribution = new Distribution(it)
-            distributions.add(distribution)
+            Survey survey = new Survey(it)
+            surveys.add(survey)
         }
     }
 
-    private int hydrateDistributions(boolean forceFlush) {
-        if(cacheDistributions.hasExpired() || forceFlush) {
-            distributions.clear()
+    private void hydrateSurveys(boolean forceFlush) {
+        if(cacheSurveys.hasExpired() || forceFlush) {
             def path
-            def query = [:]
+            def query
             if(nextPage) {
                 URL url = new URL(nextPage)
                 path = url.getPath()
                 query = convert(url.getQuery())
             }
             else {
-                path = paths.getPath("distribution.list")
+                path = paths.getPath("survey.list")
             }
-            query.put("surveyId", surveyId)
             data = httpClient.http.request(GET) { req ->
                 uri.path = path
                 uri.query = query
@@ -117,14 +115,12 @@ class Distributions {
 
                 response.success = httpClient.success
             }
-            cacheDistributions.updateFlashCacheTime()
+            cacheSurveys.updateFlashCacheTime()
 
-            hydreateDistributionsData(data?.result)
+            hydreateSurveysData(data?.result)
             nextPage = data?.result?.nextPage
             int i =0
         }
-
-        return distributions.size()
     }
 
     public static Map<String, String> convert(String str) {
@@ -133,4 +129,5 @@ class Distributions {
         for (int i=0; i<tokens.length-1; ) map.put(tokens[i++], tokens[i++]);
         return map;
     }
+
 }
