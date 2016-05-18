@@ -35,9 +35,9 @@ class Organization {
     String organizationId
     Date flushCacheTime
     int flushCacheInMilliseconds
+    String token
 
-
-    Organization(String organizationId) {
+    Organization(String organizationId, String token = null) {
         try {
             config = ConfigurationManager.getConfig()
         }
@@ -53,6 +53,7 @@ class Organization {
         this.organizationId = organizationId
         flushCacheInMilliseconds = config.getInt("qualtrics.organization.cache.flush.milliseconds", 1000)
         flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds * -1) // force flush on load
+        this.token = token ?: config.getString("qualtrics.token")
     }
 
     def getOrganizationJson() {
@@ -67,7 +68,7 @@ class Organization {
             def path = paths.getPath("organizations", [":organizationId": organizationId])
             data = httpClient.http.request(GET) { req ->
                 uri.path = path
-                headers['X-API-TOKEN'] = config.getString("qualtrics.token")
+                headers['X-API-TOKEN'] = token
 
                 response.success = httpClient.success
             }
