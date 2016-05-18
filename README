@@ -11,6 +11,9 @@ Build is managed through build.gradle
 Config create ~/qualtrics.properties file
 test.enabled=false
 program.name = "Qualtrics"
+qualtrics.token=
+qualtrics.baseURL=https://az1.qualtrics.com
+
 
 
 syslog.host=boc22vinyl.fau.edu
