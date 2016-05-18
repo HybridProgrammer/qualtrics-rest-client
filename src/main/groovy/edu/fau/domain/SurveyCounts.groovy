@@ -3,12 +3,11 @@ package edu.fau.domain
 /**
  * Created by jason on 5/18/16.
  */
-class ResponseCounts {
-    int auditable
-    int generated
-    int deleted
+class SurveyCounts {
+    int totalSurveys
+    int activeSurveys
 
-    ResponseCounts(Map map) {
+    SurveyCounts(Map map) {
         hydrateData(map)
     }
 
@@ -27,10 +26,9 @@ class ResponseCounts {
 
     @Override
     public String toString() {
-        return "ResponseCounts{" +
-                "auditable=" + auditable +
-                ", generated=" + generated +
-                ", deleted=" + deleted +
+        return "SurveyCounts{" +
+                "totalSurveys=" + totalSurveys +
+                ", activeSurveys=" + activeSurveys +
                 '}';
     }
 }

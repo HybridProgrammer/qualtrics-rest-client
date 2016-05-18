@@ -20,7 +20,7 @@ class QualtricsProcessor {
         Organization organization = new Organization("fau")
 //        (0..10).each {
 //            println organization.getOrganizationJson()
-            println organization.stats.responseCounts
+            println organization.stats
 //        }
 //        Users users = new Users()
 //        (0..10).each {

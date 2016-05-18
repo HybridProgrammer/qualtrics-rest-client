@@ -23,6 +23,7 @@ package edu.fau.domain
 class Stats {
     LoginActivity loginActivity
     ResponseCounts responseCounts
+    SurveyCounts surveyCounts
 
     Stats(def json) {
         hydrateData(json)
@@ -39,6 +40,8 @@ class Stats {
     public String toString() {
         return "Stats{" +
                 "loginActivity=" + loginActivity +
+                ", responseCounts=" + responseCounts +
+                ", surveyCounts=" + surveyCounts +
                 '}';
     }
 }
