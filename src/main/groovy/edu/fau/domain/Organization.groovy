@@ -39,8 +39,8 @@ class Organization {
 
     String baseUrl
     String httpStatus
-    Date createDate
-    Date expireationDate
+    Date creationDate
+    Date expirationDate
     String id
     String name
     Stats stats
@@ -67,9 +67,75 @@ class Organization {
 
     def getOrganizationJson() {
         hydrate()
-        stats = new Stats(data?.result?.stats)
+        //stats = new Stats(data?.result?.stats)
 
         return data
+    }
+
+    def getStats() {
+        hydrate()
+
+        return stats
+    }
+
+    def getData() {
+        hydrate()
+
+        return data
+    }
+
+    String getHttpStatus() {
+        hydrate()
+
+        return httpStatus
+    }
+
+    Date getCreationDate() {
+        hydrate()
+
+        return creationDate
+    }
+
+    Date getExpirationDate() {
+        hydrate()
+
+        return expirationDate
+    }
+
+    String getId() {
+        hydrate()
+
+        return id
+    }
+
+    String getName() {
+        hydrate()
+
+        return name
+    }
+
+    def setStats(def stats) {
+        this.stats = new Stats(stats)
+    }
+
+    def setCreationDate(String date) {
+        if(date || date == "null") return
+
+        final Calendar calendar = javax.xml.bind.DatatypeConverter.parseDateTime(date)
+        this.creationDate = calendar.getTime()
+    }
+
+    def setExpirationDate(String date) {
+        if(!date || date == "null") return
+
+        final Calendar calendar = javax.xml.bind.DatatypeConverter.parseDateTime(date)
+        this.creationDate = calendar.getTime()
+    }
+
+    private void hydrateData(Map map) {
+        metaClass.setProperties(this, map.findAll { key, value ->
+            this.hasProperty(key)
+        })
     }
 
     private void hydrate() {
@@ -83,6 +149,13 @@ class Organization {
                 response.success = httpClient.success
             }
             flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds)
+
+            if(data) {
+                hydrateData(data?.result)
+                this.httpStatus = data?.httpStatus
+            }
         }
+
+
     }
 }

@@ -23,7 +23,13 @@ package edu.fau.domain
 class Stats {
     LoginActivity loginActivity
     Stats(def json) {
-        loginActivity = new LoginActivity(json?.loginActivity)
+        hydrateData(json)
+    }
+
+    private void hydrateData(Map map) {
+        metaClass.setProperties(this, map.findAll { key, value ->
+            this.hasProperty(key)
+        })
     }
 
 

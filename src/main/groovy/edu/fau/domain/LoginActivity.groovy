@@ -39,11 +39,14 @@ class LoginActivity {
     }
 
     LoginActivity(Map map) {
+        hydrateData(map)
+    }
+
+    private void hydrateData(Map map) {
         metaClass.setProperties(this, map.findAll { key, value ->
             this.hasProperty(key)
         })
     }
-
 
     @Override
     public String toString() {
