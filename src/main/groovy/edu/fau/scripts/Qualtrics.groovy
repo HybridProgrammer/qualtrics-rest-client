@@ -1,6 +1,6 @@
 package edu.fau.scripts
 
-import edu.fau.domain.FamisOAuth2Metadata
+
 import edu.fau.services.ConfigurationManager
 import groovy.json.JsonOutput
 import groovyx.net.http.HTTPBuilder
@@ -17,7 +17,7 @@ import static groovyx.net.http.Method.GET
 
 CompositeConfiguration config
 try {
-    config = ConfigurationManager.addConfig(System.getProperty("user.home") + "/workdaysync.properties")
+    config = ConfigurationManager.addConfig(System.getProperty("user.home") + "/qualtrics.properties")
 }
 catch (Exception e) {
     e.printStackTrace()
@@ -27,22 +27,15 @@ catch (Exception e) {
 
 println "Configuration successfully loaded."
 
-def user = config.getString("famis.user", "oit")
-def pass = config.getString("famis.pass")
+def baseUrl = config.getString("qualtrics.baseURL", "https://fau.qualtrics.com")
+def token = config.getString("qualtrics.token")
 
-def baseUrl = "https://secure.360stage.net"
 //def baseUrl = "https://localhost:8081"
-def basePath = "/fau/MobileWebServices"
+def basePath = "/API"
 def paths = [:]
 
 //paths["login"] = basePath + "/api/PlatformServices/Login"
-paths["login"] = basePath + "/api/Login"
-paths["property"] = basePath + "/apis/360facility/v1/properties"
-//paths["propertyType"] = basePath + "/api/PropertyType"
-paths["propertyType"] = basePath + "/apis/360facility/v1/propertytypes"
-paths["regions"] = basePath + "/apis/360facility/v1/regions"
-paths["spaces"] = basePath + "/apis/360facility/v1/spaces"
-paths["property_region"] = basePath + "/apis/360facility/v1/propertyregionassociations"
+paths["organizations"] = basePath + "/v3/organizations/:organizationId"
 
 def http = new HTTPBuilder(baseUrl)
 //http.auth.basic(user,pass)
@@ -62,47 +55,43 @@ def success = { HttpResponseDecorator resp, reader ->
 }
 
 
-// Login
-def postBody = [
-        "UserName": user,
-        "Password": pass
-]
-data = http.request(POST) { req ->
-    uri.path = paths["login"]
-    requestContentType = JSON
-//    headers['Authorization'] =
-//            "Basic ${(user +":" + pass).bytes.encodeBase64().toString()}"
-    body = postBody
+//// Login
+//def postBody = [
+//        "UserName": user,
+//        "Password": pass
+//]
+//data = http.request(POST) { req ->
+//    uri.path = paths["login"]
+//    requestContentType = JSON
+////    headers['Authorization'] =
+////            "Basic ${(user +":" + pass).bytes.encodeBase64().toString()}"
+//    body = postBody
+//
+//
+//    response.success = success
+//}
 
+//FamisOAuth2Metadata oAuth2 = new FamisOAuth2Metadata()
+//println(data.Result)
+//oAuth2.accessToken = data.Item["access_token"]
+//oAuth2.refreshToken = data.Item["refresh_token"]
+//oAuth2.tokenType = data.Item["token_type"]
+//oAuth2.expiresIn = new Integer(data.Item["expires_in"].toString())
+//oAuth2.expires = new Date().parse("EEE, dd MMM yyyy H:m:s z", data.Item[".expires"].toString())
+//oAuth2.issued = new Date().parse("EEE, dd MMM yyyy H:m:s z", data.Item[".issued"].toString())
+
+// Get Organizations
+
+def path = paths["organizations"].toString().replace(":organizationId", "fau")
+println path
+data = http.request(GET) { req ->
+    uri.path = path
+    headers['X-API-TOKEN'] = token
 
     response.success = success
 }
 
-FamisOAuth2Metadata oAuth2 = new FamisOAuth2Metadata()
-println(data.Result)
-oAuth2.accessToken = data.Item["access_token"]
-oAuth2.refreshToken = data.Item["refresh_token"]
-oAuth2.tokenType = data.Item["token_type"]
-oAuth2.expiresIn = new Integer(data.Item["expires_in"].toString())
-oAuth2.expires = new Date().parse("EEE, dd MMM yyyy H:m:s z", data.Item[".expires"].toString())
-oAuth2.issued = new Date().parse("EEE, dd MMM yyyy H:m:s z", data.Item[".issued"].toString())
-
-// Save Properties
-
-//println paths["property"]
-//data = http.request(GET) { req ->
-//    uri.path = paths["property"]
-//    requestContentType = JSON
-//    headers['Authorization'] = oAuth2.getAuthrorization()
-//    query:[
-//            "\$top": 100,
-//            "\$skip": 0
-//    ]
-//
-//    response.success = success
-//}
-//
-//println (data)
+println (data)
 //
 //println(JsonOutput.toJson(data))
 //
@@ -165,24 +154,24 @@ oAuth2.issued = new Date().parse("EEE, dd MMM yyyy H:m:s z", data.Item[".issued"
 //out.flush()
 
 
-println paths["property_region"]
-data = http.request(GET) { req ->
-    uri.path = paths["property_region"]
-    requestContentType = JSON
-    headers['Authorization'] = oAuth2.getAuthrorization()
-    query:[
-            "\$top": 100,
-            "\$skip": 0
-    ]
-
-    response.success = success
-}
-
-//println (data)
-
-println(JsonOutput.toJson(data))
-
-PrintWriter out = new PrintWriter("property_region.json")
-
-out.println(JsonOutput.toJson(data))
-out.flush()
+//println paths["property_region"]
+//data = http.request(GET) { req ->
+//    uri.path = paths["property_region"]
+//    requestContentType = JSON
+//    headers['Authorization'] = oAuth2.getAuthrorization()
+//    query:[
+//            "\$top": 100,
+//            "\$skip": 0
+//    ]
+//
+//    response.success = success
+//}
+//
+////println (data)
+//
+//println(JsonOutput.toJson(data))
+//
+//PrintWriter out = new PrintWriter("property_region.json")
+//
+//out.println(JsonOutput.toJson(data))
+//out.flush()

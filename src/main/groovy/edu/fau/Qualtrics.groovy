@@ -10,6 +10,6 @@ cli.v(longOpt: "validate", "Verifies all rooms match their equivalent building a
 
 def options = cli.parse(args)
 
-FamisWdSyncProcessor famisWdSyncProcessor = new FamisWdSyncProcessor()
+//FamisWdSyncProcessor famisWdSyncProcessor = new FamisWdSyncProcessor()
 
 famisWdSyncProcessor.run(cli, options)
