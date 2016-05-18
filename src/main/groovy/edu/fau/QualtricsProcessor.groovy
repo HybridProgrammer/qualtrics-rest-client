@@ -29,12 +29,15 @@ class QualtricsProcessor {
 
         Users users = new Users()
 
-        users.findAll {it.divisionId == 'DV_cCH5INYYqODTYix' }.each {
-            println it
-        }
+//        users.findAll {it.divisionId == 'DV_cCH5INYYqODTYix' }.each {
+//            println it
+//        }
 
-        def user = users.findAll {it.username == 'jloiacon' && it.firstName=='Joseph'}.first()
+        User user = (User) users.findAll {it.username == 'jloiacon' && it.firstName=='Joseph'}.first()
         println user
+
+        def user2 = users.getUser(user.id)
+        println user2
 
 //        users.each {
 //            println it

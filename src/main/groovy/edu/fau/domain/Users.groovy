@@ -31,15 +31,18 @@ import static groovyx.net.http.Method.GET
 class Users {
     RESTPaths paths
     HttpClient httpClient
+    String httpStatus
     CompositeConfiguration config
     def data
     String userId
     CacheStats cacheAPIToken = new CacheStats()
     CacheStats cacheUsers = new CacheStats()
+    CacheStats cacheUser = new CacheStats()
     String token
     String nextPage
 
     def users = []
+    def user
 
     Users(String token = null) {
         try {
@@ -77,6 +80,36 @@ class Users {
             users[index++]
 
         }] as Iterator
+    }
+
+    def getUser(String userId) {
+        hydrateUser(userId)
+
+        return user
+    }
+
+    private void hydrateUserData(Map map) {
+        User user = new User(map)
+        this.user = user
+    }
+
+    private void hydrateUser(String userId) {
+        Date now = new Date()
+        if (cacheUser.hasExpired()) {
+            def path = paths.getPath("user.get", [":userId": userId])
+            data = httpClient.http.request(GET) { req ->
+                uri.path = path
+                headers['X-API-TOKEN'] = token
+
+                response.success = httpClient.success
+            }
+            cacheUser.updateFlashCacheTime()
+
+            if (data) {
+                hydrateUserData(data?.result)
+                this.httpStatus = data?.httpStatus
+            }
+        }
     }
 
     private void hydreateUsersData(def map) {
