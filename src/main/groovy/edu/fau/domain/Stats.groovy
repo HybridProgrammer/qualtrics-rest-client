@@ -22,6 +22,8 @@ package edu.fau.domain
  */
 class Stats {
     LoginActivity loginActivity
+    ResponseCounts responseCounts
+
     Stats(def json) {
         hydrateData(json)
     }
