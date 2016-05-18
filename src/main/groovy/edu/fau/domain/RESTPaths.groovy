@@ -42,6 +42,7 @@ class RESTPaths {
 
         paths["organizations"] = basePath + "/v3/organizations/:organizationId"
         paths["user.api.token"] = basePath + "/v3/users/:userId/apitoken"
+        paths["user.list"] = basePath + "/v3/users"
 
     }
 
@@ -53,6 +54,11 @@ class RESTPaths {
             path = path.toString().replace(it.key, it.value)
         }
 
+        return path
+    }
+
+    def getPath(String key) {
+        def path = paths[key]
         return path
     }
 }

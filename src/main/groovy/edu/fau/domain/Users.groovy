@@ -2,8 +2,9 @@ package edu.fau.domain
 
 import edu.fau.services.ConfigurationManager
 import edu.fau.services.HttpClient
+import jdk.nashorn.internal.codegen.Splitter
+import net.sf.json.JSON
 import org.apache.commons.configuration.CompositeConfiguration
-import org.apache.commons.lang.time.DateUtils
 
 import static groovyx.net.http.Method.GET
 
@@ -33,9 +34,12 @@ class Users {
     CompositeConfiguration config
     def data
     String userId
-    Date flushCacheTime
-    int flushCacheInMilliseconds
+    CacheStats cacheAPIToken = new CacheStats()
+    CacheStats cacheUsers = new CacheStats()
     String token
+    String nextPage
+
+    def users = []
 
     Users(String token = null) {
         try {
@@ -49,9 +53,70 @@ class Users {
         paths = new RESTPaths()
         httpClient = new HttpClient(config.getString("qualtrics.baseURL", "https://fau.qualtrics.com"))
         this.userId = userId
-        flushCacheInMilliseconds = config.getInt("qualtrics.users.cache.flush.milliseconds", 1000)   // 1 second
-        flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds * -1) // force flush on load
         this.token = token ?: config.getString("qualtrics.token")
+    }
+
+    def index = 0
+    Iterator iterator() {
+        index = 0
+        return [hasNext: {
+            index < users.size() || nextPage || (!nextPage && index == users.size() && index == 0)
+        }, next: {
+            if(index >= users.size()) {
+                if(nextPage || (index == users.size() && index == 0)) {
+                    users.clear()
+                    hydrateUsers(true)
+                    index = 0
+                }
+                else {
+                    return null
+                }
+            }
+
+            users[index++]
+
+        }] as Iterator
+    }
+
+    private void hydreateUsersData(def map) {
+        map?.elements.each {
+            User user = new User(it)
+            users.add(user)
+        }
+    }
+
+    private void hydrateUsers(boolean forceFlush) {
+        if(cacheUsers.hasExpired() || forceFlush) {
+            def path
+            def query
+            if(nextPage) {
+                URL url = new URL(nextPage)
+                path = url.getPath()
+                query = convert(url.getQuery())
+            }
+            else {
+                path = paths.getPath("user.list")
+            }
+            data = httpClient.http.request(GET) { req ->
+                uri.path = path
+                uri.query = query
+                headers['X-API-TOKEN'] = token
+
+                response.success = httpClient.success
+            }
+            cacheUsers.updateFlashCacheTime()
+
+            hydreateUsersData(data?.result)
+            nextPage = data?.result?.nextPage
+            int i =0
+        }
+    }
+
+    public static Map<String, String> convert(String str) {
+        String[] tokens = str.split("&|=");
+        Map<String, String> map = new HashMap<>();
+        for (int i=0; i<tokens.length-1; ) map.put(tokens[i++], tokens[i++]);
+        return map;
     }
 
     def getUserToken(String userId) {
@@ -68,8 +133,7 @@ class Users {
     }
 
     private void hydrateUserAPIToken(boolean forceFlush) {
-        Date now = new Date()
-        if(now.after(flushCacheTime) || forceFlush) {
+        if(cacheAPIToken.hasExpired() || forceFlush) {
             def path = paths.getPath("user.api.token", [":userId": userId])
             data = httpClient.http.request(GET) { req ->
                 uri.path = path
@@ -77,7 +141,7 @@ class Users {
 
                 response.success = httpClient.success
             }
-            flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds)
+            cacheAPIToken.updateFlashCacheTime()
         }
     }
 }
