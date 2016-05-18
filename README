@@ -1,0 +1,42 @@
+## Prerequisites
+
+* Gradle (originally built on version 2.10):
+** Installation instructions https://kb.fau.edu:8444/display/SOF/Gradle
+* Groovy (originally built on version 2.4.4):
+** Installation instructions https://kb.fau.edu:8444/display/SOF/Groovy
+
+## Build Instructions
+Build is managed through build.gradle
+
+Config create ~/qualtrics.properties file
+test.enabled=false
+program.name = "Qualtrics"
+
+
+syslog.host=boc22vinyl.fau.edu
+syslog.port=514
+syslog.proto=udp
+
+log.console=true
+log.email.enabled=true
+log.email.simulate=true
+
+email.alerts.to=jheithof@fau.edu
+
+output.path=/Volumes/Transcend/IdeaProjects/FamisWdSync/output
+
+
+To build run
+chmod u+x build.sh
+./build.sh
+
+
+To run
+java -jar build/libs/Qualtrics-all-1.0.jar
+
+This will package project into a jar and place it in build/libs
+
+
+VM Options:
+Enabling Logging
+-Djava.util.logging.config.file=/Users/jason/IdeaProjects/Qualtrics/lib/log-config.properties

@@ -1,0 +1,103 @@
+apply plugin: 'groovy'
+apply plugin:'application'
+
+
+project.group = "FAU.Qualtrics"
+project.version = "1.0"
+mainClassName = 'edu.fau.Qualtrics'
+
+sourceCompatibility=1.8
+targetCompatibility=1.8
+
+repositories {
+    mavenCentral()
+    flatDir { dirs 'lib' }
+}
+
+
+dependencies {
+    compile 'commons-beanutils:commons-beanutils:1.9.2'
+    compile 'commons-codec:commons-codec:1.10'
+    compile 'commons-collections:commons-collections:3.2.2'
+    compile 'commons-configuration:commons-configuration:1.10'
+    compile 'commons-io:commons-io:2.4'
+    compile 'commons-lang:commons-lang:2.6'
+    compile 'commons-logging:commons-logging:1.2'
+    compile 'net.sf.ezmorph:ezmorph:1.0.6'
+    compile 'org.apache.httpcomponents:fluent-hc:4.5.1'
+    compile 'org.codehaus.groovy:groovy-json:2.4.5'
+    compile('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1')
+            {
+                exclude module: 'jna'
+                exclude module: 'jna-platform'
+            }
+    compile ('org.apache.httpcomponents:httpclient:4.5.1')
+            {
+                exclude module: 'jna'
+                exclude module: 'jna-platform'
+            }
+    compile ('org.apache.httpcomponents:httpclient-cache:4.5.1')
+            {
+                exclude module: 'jna'
+                exclude module: 'jna-platform'
+            }
+    compile ('org.apache.httpcomponents:httpclient-win:4.5.1')
+            {
+                exclude module: 'jna'
+                exclude module: 'jna-platform'
+            }
+    compile('org.apache.httpcomponents:httpcore:4.4.4')
+            {
+                exclude module: 'jna'
+                exclude module: 'jna-platform'
+            }
+    compile 'org.apache.httpcomponents:httpmime:4.5.1'
+//    compile 'net.java.dev.jna:jna:4.2.1'
+//    compile 'net.java.dev.jna:jna-platform:4.2.1'
+//    compile 'net.sf.json-lib:json-lib:2.4'
+    compile 'javax.mail:mail:1.4.7'
+    compile 'us.monoid.web:resty:0.3.2'
+    compile 'org.slf4j:slf4j-api:1.7.14'
+    compile 'org.slf4j:slf4j-jdk14:1.7.14'
+    compile 'xml-resolver:xml-resolver:1.2'
+
+//    compile 'org.codehaus.groovy:groovy:2.4.4'
+//    compile 'org.codehaus.groovy:groovy-xml:2.4.5'
+    compile 'org.codehaus.groovy:groovy-xml:2.4.0-beta-3'
+
+    compile 'org.codehaus.gpars:gpars:1.2.1'
+
+
+
+    compile 'xalan:serializer:2.7.2'
+
+    compile 'xalan:xalan:2.7.2'
+    compile 'org.syslog4j:syslog4j:0.9.30'
+    compile 'com.opencsv:opencsv:3.7'
+
+    compile 'commons-cli:commons-cli:1.3.1'
+
+
+}
+
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
+    }
+}
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+        attributes 'Main-Class': mainClassName
+
+    }
+}
