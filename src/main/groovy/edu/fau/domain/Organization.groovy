@@ -65,7 +65,7 @@ class Organization {
     private void hydrate() {
         Date now = new Date()
         if(now.after(flushCacheTime)) {
-            def path = paths.getPath("organizations", [":userId": organizationId])
+            def path = paths.getPath("organizations", [":organizationId": organizationId])
             data = httpClient.http.request(GET) { req ->
                 uri.path = path
                 headers['X-API-TOKEN'] = token
