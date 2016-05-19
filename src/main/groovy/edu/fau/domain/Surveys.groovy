@@ -40,7 +40,9 @@ class Surveys {
     def index = 0
     Iterator iterator() {
         index = 0
-        surveys.clear()
+        if(surveys.size() > cacheSurveys.maxObjects || cacheSurveys.hasExpired()) {
+            surveys.clear()
+        }
         nextPage = null
         return [hasNext: {
             index < surveys.size() || (!nextPage && index == surveys.size() && index == 0 && hydrateSurveys(true)) || (nextPage && hydrateSurveys(true))
@@ -92,9 +94,11 @@ class Surveys {
 
     private int  hydrateSurveys(boolean forceFlush) {
         if(cacheSurveys.hasExpired() || forceFlush) {
+            if(surveys.size() > cacheSurveys.maxObjects || cacheSurveys.hasExpired()) {
+                surveys.clear()
+            }
             def path
             def query
-            surveys.clear()
             if(nextPage) {
                 URL url = new URL(nextPage)
                 path = url.getPath()

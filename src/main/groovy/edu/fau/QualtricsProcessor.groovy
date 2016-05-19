@@ -39,23 +39,23 @@ class QualtricsProcessor {
 //        def user2 = users.getUser(user.id)
 //        println user2
 
-        def time1 =elapsedTime {
-            users.each {
-                println it
-            }
-        }
-
+//        def time1 =elapsedTime {
+//            users.each {
+//                println it
+//            }
+//        }
 //
-        System.sleep(10000)
+////
+//        System.sleep(10000)
+////
+//        def time2 =elapsedTime {
+//            users.each {
+//                println it
+//            }
+//        }
 //
-        def time2 =elapsedTime {
-            users.each {
-                println it
-            }
-        }
-
-        println time1
-        println time2
+//        println time1
+//        println time2
 //
 //        Survey survey
 //        Surveys surveys = new Surveys()

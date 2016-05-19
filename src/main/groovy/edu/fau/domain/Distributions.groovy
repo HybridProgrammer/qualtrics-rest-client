@@ -42,7 +42,9 @@ class Distributions {
     def index = 0
     Iterator iterator() {
         index = 0
-        distributions.clear()
+        if(distributions.size() > cacheDistributions.maxObjects || cacheDistributions.hasExpired()) {
+            distributions.clear()
+        }
         nextPage = null
         return [hasNext: {
             index < distributions.size() || (!nextPage && index == distributions.size() && index == 0 && hydrateDistributions(true)) || (nextPage && hydrateDistributions(true))
@@ -94,7 +96,9 @@ class Distributions {
 
     private int hydrateDistributions(boolean forceFlush) {
         if(cacheDistributions.hasExpired() || forceFlush) {
-            distributions.clear()
+            if(distributions.size() > cacheDistributions.maxObjects || cacheDistributions.hasExpired()) {
+                distributions.clear()
+            }
             def path
             def query = [:]
             if(nextPage) {
