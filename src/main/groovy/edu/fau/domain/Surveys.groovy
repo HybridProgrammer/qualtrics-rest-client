@@ -41,18 +41,12 @@ class Surveys {
     Iterator iterator() {
         index = 0
         surveys.clear()
+        nextPage = null
         return [hasNext: {
-            index < surveys.size() || nextPage || (!nextPage && index == surveys.size() && index == 0)
+            index < surveys.size() || (!nextPage && index == surveys.size() && index == 0 && hydrateSurveys(true)) || (nextPage && hydrateSurveys(true))
         }, next: {
             if(index >= surveys.size()) {
-                if(nextPage || (index == surveys.size() && index == 0)) {
-                    surveys.clear()
-                    hydrateSurveys(true)
-                    index = 0
-                }
-                else {
-                    return null
-                }
+                index = 0
             }
 
             surveys[index++]
@@ -96,10 +90,11 @@ class Surveys {
         }
     }
 
-    private void hydrateSurveys(boolean forceFlush) {
+    private int  hydrateSurveys(boolean forceFlush) {
         if(cacheSurveys.hasExpired() || forceFlush) {
             def path
             def query
+            surveys.clear()
             if(nextPage) {
                 URL url = new URL(nextPage)
                 path = url.getPath()
@@ -121,6 +116,8 @@ class Surveys {
             nextPage = data?.result?.nextPage
             int i =0
         }
+
+        return surveys.size()
     }
 
     public static Map<String, String> convert(String str) {

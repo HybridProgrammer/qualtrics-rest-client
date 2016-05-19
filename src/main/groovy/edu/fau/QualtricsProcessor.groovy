@@ -27,7 +27,7 @@ class QualtricsProcessor {
 ////            println users.getUserToken("UR_2u7WmfdCEWLDB5z")
 ////        }
 
-//        Users users = new Users()
+        Users users = new Users()
 
 //        users.findAll {it.divisionId == 'DV_cCH5INYYqODTYix' }.each {
 //            println it
@@ -42,7 +42,13 @@ class QualtricsProcessor {
 //        users.each {
 //            println it
 //        }
-
+//
+//        System.sleep(1000)
+//
+//        users.each {
+//            println it
+//        }
+//
         Survey survey
         Surveys surveys = new Surveys()
         surveys.each {

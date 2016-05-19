@@ -62,18 +62,12 @@ class Users {
     Iterator iterator() {
         index = 0
         users.clear()
+        nextPage = null
         return [hasNext: {
-            index < users.size() || nextPage || (!nextPage && index == users.size() && index == 0)
+            index < users.size() || (!nextPage && index == users.size() && index == 0 && hydrateUsers(true)) || (nextPage && hydrateUsers(true))
         }, next: {
             if(index >= users.size()) {
-                if(nextPage || (index == users.size() && index == 0)) {
-                    users.clear()
-                    hydrateUsers(true)
-                    index = 0
-                }
-                else {
-                    return null
-                }
+                index = 0
             }
 
             users[index++]
@@ -117,8 +111,9 @@ class Users {
         }
     }
 
-    private void hydrateUsers(boolean forceFlush) {
+    private int hydrateUsers(boolean forceFlush) {
         if(cacheUsers.hasExpired() || forceFlush) {
+            users.clear()
             def path
             def query
             if(nextPage) {
@@ -142,6 +137,8 @@ class Users {
             nextPage = data?.result?.nextPage
             int i =0
         }
+
+        return users.size()
     }
 
     public static Map<String, String> convert(String str) {

@@ -43,16 +43,12 @@ class Distributions {
     Iterator iterator() {
         index = 0
         distributions.clear()
+        nextPage = null
         return [hasNext: {
-            index < distributions.size() || nextPage || (!nextPage && index == distributions.size() && index == 0 && hydrateDistributions(true))
+            index < distributions.size() || (!nextPage && index == distributions.size() && index == 0 && hydrateDistributions(true)) || (nextPage && hydrateDistributions(true))
         }, next: {
             if(index >= distributions.size()) {
-                if(nextPage || (index == distributions.size() && index == 0)) {
-                    index = 0
-                }
-                else {
-                    return null
-                }
+                index = 0
             }
 
             distributions[index++]
