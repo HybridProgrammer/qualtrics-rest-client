@@ -27,7 +27,7 @@ class QualtricsProcessor {
 ////            println users.getUserToken("UR_2u7WmfdCEWLDB5z")
 ////        }
 
-        Users users = new Users()
+//        Users users = new Users()
 
 //        users.findAll {it.divisionId == 'DV_cCH5INYYqODTYix' }.each {
 //            println it
@@ -57,18 +57,20 @@ class QualtricsProcessor {
 //        println time1
 //        println time2
 //
-//        Survey survey
-//        Surveys surveys = new Surveys()
-//        surveys.each {
-//            println it
-//            survey = it
-//        }
-//
-//        println "Distributions for " + survey
-//        Distributions distributions = new Distributions(survey.id)
-//        distributions.each {
-//            println it
-//        }
+        Survey survey
+        Surveys surveys = new Surveys()
+        surveys.each {
+            println it
+        }
+
+        survey = surveys.find {it.name == "Test"}
+
+
+        println "Distributions for " + survey
+        Distributions distributions = new Distributions(survey.id)
+        distributions.each {
+            println it
+        }
 
 
 

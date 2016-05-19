@@ -7,9 +7,47 @@ class Distribution {
     String id
     String parentDistributionId
     String ownerId
+    String organizationId
+    String requestStatus
+    String requestType
+    Date sendDate
+    Date createdDate
+    Date modifiedDate
+    Headers headers
+    Recipients recipients
+    Message message
+    SurveyLink surveyLink
+    DistributionStats stats
+
+
 
     Distribution(Map map) {
         hydrateData(map)
+    }
+
+    def setCreatedDate(String date) {
+        if(!date || date == "null") return
+
+        final Calendar calendar = javax.xml.bind.DatatypeConverter.parseDateTime(date)
+        this.createdDate = calendar.getTime()
+    }
+
+    def setSendDate(String date) {
+        if(!date || date == "null") return
+
+        final Calendar calendar = javax.xml.bind.DatatypeConverter.parseDateTime(date)
+        this.sendDate = calendar.getTime()
+    }
+
+    def setModifiedDate(String date) {
+        if(!date || date == "null") return
+
+        final Calendar calendar = javax.xml.bind.DatatypeConverter.parseDateTime(date)
+        this.modifiedDate = calendar.getTime()
+    }
+
+    def setHeaders(def stats) {
+        this.headers = new Headers(stats)
     }
 
     public Map asMap() {
@@ -31,6 +69,17 @@ class Distribution {
                 "id='" + id + '\'' +
                 ", parentDistributionId='" + parentDistributionId + '\'' +
                 ", ownerId='" + ownerId + '\'' +
-                '}';
+                ", organizationId='" + organizationId + '\'' +
+                ", requestStatus='" + requestStatus + '\'' +
+                ", requestType='" + requestType + '\'' +
+                ", sendDate=" + sendDate +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                ",\r\n\t headers=" + headers +
+                ",\r\n\t recipients=" + recipients +
+                ",\r\n\t message=" + message +
+                ",\r\n\t surveyLink=" + surveyLink +
+                ",\r\n\t stats=" + stats +
+                '\r\n}';
     }
 }

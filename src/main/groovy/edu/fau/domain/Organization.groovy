@@ -117,7 +117,7 @@ class Organization {
     }
 
     def setCreationDate(String date) {
-        if(date || date == "null") return
+        if(!date || date == "null") return
 
         final Calendar calendar = javax.xml.bind.DatatypeConverter.parseDateTime(date)
         this.creationDate = calendar.getTime()
