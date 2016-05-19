@@ -2,8 +2,6 @@ package edu.fau.domain
 
 import edu.fau.services.ConfigurationManager
 import edu.fau.services.HttpClient
-import jdk.nashorn.internal.codegen.Splitter
-import net.sf.json.JSON
 import org.apache.commons.configuration.CompositeConfiguration
 
 import static groovyx.net.http.Method.GET
