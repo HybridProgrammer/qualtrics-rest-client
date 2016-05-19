@@ -56,12 +56,17 @@ class Users {
         paths = new RESTPaths()
         httpClient = new HttpClient(config.getString("qualtrics.baseURL", "https://fau.qualtrics.com"))
         this.token = token ?: config.getString("qualtrics.token")
+        if(cacheUsers.flushCacheInMilliseconds == 1000) {
+            cacheUsers.flushCacheInMilliseconds = 600000  // 10 minutes
+        }
     }
 
     def index = 0
     Iterator iterator() {
         index = 0
-        users.clear()
+        if(users.size() > cacheUsers.maxObjects || cacheUsers.hasExpired()) {
+            users.clear()
+        }
         nextPage = null
         return [hasNext: {
             index < users.size() || (!nextPage && index == users.size() && index == 0 && hydrateUsers(true)) || (nextPage && hydrateUsers(true))
@@ -107,13 +112,18 @@ class Users {
     private void hydreateUsersData(def map) {
         map?.elements.each {
             User user = new User(it)
-            users.add(user)
+            if(!users.find {it.id == user.id}) {
+                users.add(user)
+            }
         }
     }
 
     private int hydrateUsers(boolean forceFlush) {
         if(cacheUsers.hasExpired() || forceFlush) {
-            users.clear()
+            if(users.size() > cacheUsers.maxObjects || cacheUsers.hasExpired()) {
+                users.clear()
+            }
+
             def path
             def query
             if(nextPage) {

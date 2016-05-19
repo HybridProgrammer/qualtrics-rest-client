@@ -10,9 +10,10 @@ import org.apache.commons.lang.time.DateUtils
 class CacheStats {
     Date flushCacheTime
     int flushCacheInMilliseconds
+    int maxObjects
     CompositeConfiguration config
 
-    CacheStats(String configName = null) {
+    CacheStats(String configPrefix = null) {
         try {
             config = ConfigurationManager.getConfig()
         }
@@ -21,11 +22,13 @@ class CacheStats {
             println "Error loading config: " + e.message
         }
 
-        if(configName) {
-            flushCacheInMilliseconds = config.getInt(configName, 1000)   // 1 second
+        if(configPrefix) {
+            flushCacheInMilliseconds = config.getInt(configPrefix + ".flush.milliseconds", 1000)   // 1 second
+            maxObjects = config.getInt(configPrefix + ".max.objects", 1000)
         }
         else {
             flushCacheInMilliseconds = config.getInt("qualtrics.cache.flush.milliseconds", 1000)   // 1 second
+            maxObjects = config.getInt("qualtrics.cache.max.objects", 1000)
         }
         flushCacheTime = DateUtils.addMilliseconds(new Date(), flushCacheInMilliseconds * -1) // force flush on load
 
