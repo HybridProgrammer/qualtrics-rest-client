@@ -4,10 +4,9 @@ package edu.fau.domain
  * Created by jason on 5/19/16.
  */
 class Message {
-    String fromEmail
-    String replyToEmail
-    String fromName
-    String subject
+    String libraryId
+    String messageId
+    String messageText
 
     Message(Map map) {
         hydrateData(map)
@@ -29,10 +28,9 @@ class Message {
     @Override
     public String toString() {
         return "Message{" +
-                "fromEmail='" + fromEmail + '\'' +
-                ", replyToEmail='" + replyToEmail + '\'' +
-                ", fromName='" + fromName + '\'' +
-                ", subject='" + subject + '\'' +
+                "libraryId='" + libraryId + '\'' +
+                ", messageId='" + messageId + '\'' +
+                ", messageText='" + messageText + '\'' +
                 '}';
     }
 }

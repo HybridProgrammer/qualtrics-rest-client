@@ -20,6 +20,9 @@ class Distribution {
     DistributionStats stats
 
 
+    Distribution() {
+
+    }
 
     Distribution(Map map) {
         hydrateData(map)
