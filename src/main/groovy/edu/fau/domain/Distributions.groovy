@@ -20,11 +20,12 @@ class Distributions {
     String token
     String nextPage
     String surveyId
+    def params = [:]
 
     def distributions = []
     def distribution
 
-    Distributions(String surveyId, String token = null) {
+    Distributions(String surveyId, def params = [:], String token = null) {
         try {
             config = ConfigurationManager.getConfig()
         }
@@ -37,6 +38,7 @@ class Distributions {
         httpClient = new HttpClient(config.getString("qualtrics.baseURL", "https://fau.qualtrics.com"))
         this.token = token ?: config.getString("qualtrics.token")
         this.surveyId = surveyId
+        this.params = params
     }
 
     def index = 0
@@ -110,6 +112,9 @@ class Distributions {
                 path = paths.getPath("distribution.list")
             }
             query.put("surveyId", surveyId)
+            params.each {
+                query.put(it.key, it.value)
+            }
             data = httpClient.http.request(GET) { req ->
                 uri.path = path
                 uri.query = query

@@ -67,7 +67,7 @@ class QualtricsProcessor {
 
 
         println "Distributions for " + survey
-        Distributions distributions = new Distributions(survey.id)
+        Distributions distributions = new Distributions(survey.id, [distributionRequestType: "Invite"])
         distributions.each {
             println it
         }
