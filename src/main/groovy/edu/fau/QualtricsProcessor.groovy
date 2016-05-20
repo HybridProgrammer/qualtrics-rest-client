@@ -40,6 +40,7 @@ class QualtricsProcessor {
         println user
 
         LibraryMessages libraryMessages = new LibraryMessages(user.id)
+        LibraryMessage libraryMessage = libraryMessages.find {it.description == "test message"}
         libraryMessages.each {
             println it
         }
@@ -65,25 +66,27 @@ class QualtricsProcessor {
 //        println time1
 //        println time2
 //
-//        Survey survey
-//        Surveys surveys = new Surveys()
-//        surveys.each {
-//            println it
-//        }
-//
-//        survey = surveys.find {it.name == "Test"}
-//
-//
-//        println "Distributions for " + survey
-//        Distributions distributions = new Distributions(survey.id, [distributionRequestType: "Invite"])
-//        Distribution distribution
-//        distributions.each {
-//            println it
-//            distribution = it
-//        }
-//
-//        distribution.headers.subject += "."
-//        println distribution.save()
+        Survey survey
+        Surveys surveys = new Surveys()
+        surveys.each {
+            println it
+        }
+
+        survey = surveys.find {it.name == "Test"}
+
+
+        println "Distributions for " + survey
+        Distributions distributions = new Distributions(survey.id, [distributionRequestType: "Invite"])
+        Distribution distribution
+        distributions.each {
+            println it
+            distribution = it
+        }
+
+        distribution.headers.subject += "."
+        distribution.message.libraryId = user.id
+        distribution.message.messageId = libraryMessage.id
+        println distribution.save()
 
     }
 
