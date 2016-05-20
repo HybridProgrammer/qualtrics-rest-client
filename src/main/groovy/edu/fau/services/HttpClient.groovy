@@ -30,8 +30,8 @@ class HttpClient {
     HttpClient(String baseUrl) {
         http = new HTTPBuilder(baseUrl)
 
-        http.handler.failure = { resp ->
-            println "Unexpected failure: ${resp.statusLine}"
+        http.handler.failure = { resp, reader ->
+            println "Unexpected failure: ${resp.statusLine} ${reader}"
         }
 
         http.handler.success = { HttpResponseDecorator resp, reader ->

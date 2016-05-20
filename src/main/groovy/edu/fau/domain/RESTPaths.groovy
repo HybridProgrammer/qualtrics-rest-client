@@ -46,8 +46,11 @@ class RESTPaths {
         paths["user.get"] = basePath + "/v3/users/:userId"
         paths["distribution.list"] = basePath + "/v3/distributions"
         paths["distribution.get"] = basePath + "/v3/distributions/:distributionId"
+        paths["distribution.post"] = basePath + "/v3/distributions"
+        paths["libraryMessages.get"] = basePath + "/v3/libraries/:libraryId/messages"
         paths["survey.list"] = basePath + "/v3/surveys"
         paths["survey.get"] = basePath + "/v3/surveys/:surveyId"
+
 
     }
 

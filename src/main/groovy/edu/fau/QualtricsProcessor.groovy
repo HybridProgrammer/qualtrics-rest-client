@@ -27,14 +27,22 @@ class QualtricsProcessor {
 ////            println users.getUserToken("UR_2u7WmfdCEWLDB5z")
 ////        }
 
-//        Users users = new Users()
+        Users users = new Users()
+//        users.each {
+//                println it
+//            }
 
 //        users.findAll {it.divisionId == 'DV_cCH5INYYqODTYix' }.each {
 //            println it
 //        }
 
-//        User user = (User) users.findAll {it.username == 'jloiacon' && it.firstName=='Joseph'}.first()
-//        println user
+        User user = (User) users.findAll {it.username == 'jheithof@fau.edu#fau' && it.firstName=='Jason'}.first()
+        println user
+
+        LibraryMessages libraryMessages = new LibraryMessages(user.id)
+        libraryMessages.each {
+            println it
+        }
 //
 //        def user2 = users.getUser(user.id)
 //        println user2
@@ -57,22 +65,25 @@ class QualtricsProcessor {
 //        println time1
 //        println time2
 //
-        Survey survey
-        Surveys surveys = new Surveys()
-        surveys.each {
-            println it
-        }
-
-        survey = surveys.find {it.name == "Test"}
-
-
-        println "Distributions for " + survey
-        Distributions distributions = new Distributions(survey.id, [distributionRequestType: "Invite"])
-        distributions.each {
-            println it
-        }
-
-
+//        Survey survey
+//        Surveys surveys = new Surveys()
+//        surveys.each {
+//            println it
+//        }
+//
+//        survey = surveys.find {it.name == "Test"}
+//
+//
+//        println "Distributions for " + survey
+//        Distributions distributions = new Distributions(survey.id, [distributionRequestType: "Invite"])
+//        Distribution distribution
+//        distributions.each {
+//            println it
+//            distribution = it
+//        }
+//
+//        distribution.headers.subject += "."
+//        println distribution.save()
 
     }
 
