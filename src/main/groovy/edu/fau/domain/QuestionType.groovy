@@ -20,31 +20,30 @@ package edu.fau.domain
  * Time: 6:38 AM
  *
  */
-class Questions {
+class QuestionType {
     def data
-    List<Question> questions = new ArrayList<>()
+    String selector
+    String subSelector
+    String type
 
-    Questions(def json) {
+    QuestionType(def json) {
         hydrateData(json)
         this.data = json
     }
 
     private void hydrateData(Map map) {
-//        metaClass.setProperties(this, map.findAll { key, value ->
-//            this.hasProperty(key)
-//        })
-
-        map.each {
-            Question question = new Question(it.value)
-            questions.add(question)
-        }
+        metaClass.setProperties(this, map.findAll { key, value ->
+            this.hasProperty(key)
+        })
     }
 
 
     @Override
     public String toString() {
-        return "Questions{" +
-                "questions=" + questions +
+        return "QuestionType{" +
+                "selector='" + selector + '\'' +
+                ", subSelector='" + subSelector + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

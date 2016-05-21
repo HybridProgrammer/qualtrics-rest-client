@@ -20,11 +20,13 @@ package edu.fau.domain
  * Time: 6:38 AM
  *
  */
-class Questions {
+class Question {
     def data
-    List<Question> questions = new ArrayList<>()
+    String questionText
+    List<Choices> choices = new ArrayList<>()
+    QuestionType questionType
 
-    Questions(def json) {
+    Question(def json) {
         hydrateData(json)
         this.data = json
     }
@@ -33,10 +35,11 @@ class Questions {
 //        metaClass.setProperties(this, map.findAll { key, value ->
 //            this.hasProperty(key)
 //        })
-
-        map.each {
-            Question question = new Question(it.value)
-            questions.add(question)
+        questionText = map.questionText
+        questionType = new QuestionType(map.questionType)
+        map.choices.each {
+            Choices choice = new Choices(it.value)
+            choices.add(choice)
         }
     }
 
@@ -44,7 +47,7 @@ class Questions {
     @Override
     public String toString() {
         return "Questions{" +
-                "questions=" + questions +
+                "data=" + data +
                 '}';
     }
 }
