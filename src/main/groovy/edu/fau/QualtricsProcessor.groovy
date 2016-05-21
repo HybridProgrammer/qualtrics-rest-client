@@ -28,7 +28,7 @@ class QualtricsProcessor {
 ////            println users.getUserToken("UR_2u7WmfdCEWLDB5z")
 ////        }
 
-        Users users = new Users()
+//        Users users = new Users()
 //        users.each {
 //                println it
 //            }
@@ -37,14 +37,14 @@ class QualtricsProcessor {
 //            println it
 //        }
 
-        User user = (User) users.findAll {it.username == 'jheithof@fau.edu#fau' && it.firstName=='Jason'}.first()
-        println user
-
-        LibraryMessages libraryMessages = new LibraryMessages(user.id)
-        LibraryMessage libraryMessage = libraryMessages.find {it.description == "test message"}
-        libraryMessages.each {
-            println it
-        }
+//        User user = (User) users.findAll {it.username == 'jheithof@fau.edu#fau' && it.firstName=='Jason'}.first()
+//        println user
+//
+//        LibraryMessages libraryMessages = new LibraryMessages(user.id)
+//        LibraryMessage libraryMessage = libraryMessages.find {it.description == "test message"}
+//        libraryMessages.each {
+//            println it
+//        }
 //
 //        def user2 = users.getUser(user.id)
 //        println user2
@@ -74,22 +74,24 @@ class QualtricsProcessor {
         }
 
         survey = surveys.find {it.name == "Test"}
+        survey = surveys.getSurvey(survey.id)
+        println survey
 
 
-        println "Distributions for " + survey
-        Distributions distributions = new Distributions(survey.id, [distributionRequestType: "Invite"])
-        Distribution distribution
-        distributions.each {
-            println it
-            distribution = it
-        }
-
-        distribution.headers.subject += "."
-        distribution.message.libraryId = user.id
-        distribution.message.messageId = libraryMessage.id
-        distribution.sendDate = DateUtils.addHours(new Date(), 2) // schedule 2 hours from now
-        distribution.surveyLink.expirationDate = (new Date() + 1) // expire 1 day from now
-        println distribution.save()
+//        println "Distributions for " + survey
+//        Distributions distributions = new Distributions(survey.id, [distributionRequestType: "Invite"])
+//        Distribution distribution
+//        distributions.each {
+//            println it
+//            distribution = it
+//        }
+//
+//        distribution.headers.subject += "."
+//        distribution.message.libraryId = user.id
+//        distribution.message.messageId = libraryMessage.id
+//        distribution.sendDate = DateUtils.addHours(new Date(), 2) // schedule 2 hours from now
+//        distribution.surveyLink.expirationDate = (new Date() + 1) // expire 1 day from now
+//        println distribution.save()
 
     }
 
