@@ -6,6 +6,7 @@ import edu.fau.services.*
 import groovy.time.TimeCategory
 import groovyx.gpars.GParsPool
 import org.apache.commons.configuration.CompositeConfiguration
+import org.apache.commons.lang.time.DateUtils
 
 import java.util.regex.Pattern
 
@@ -86,6 +87,8 @@ class QualtricsProcessor {
         distribution.headers.subject += "."
         distribution.message.libraryId = user.id
         distribution.message.messageId = libraryMessage.id
+        distribution.sendDate = DateUtils.addHours(new Date(), 2) // schedule 2 hours from now
+        distribution.surveyLink.expirationDate = (new Date() + 1) // expire 1 day from now
         println distribution.save()
 
     }

@@ -120,11 +120,11 @@ class Distribution {
     def save() {
         def path = paths.getPath("distribution.post")
         def builder = new JsonBuilder()
-        String sDate = (DateUtils.addHours(new Date(), 2)).format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("Zulu"))
+        String sDate = this.sendDate.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("Zulu"))
         def root = builder {
             surveyLink(
                 "surveyId": this.surveyLink.surveyId,
-                "expirationDate": (new Date() + 1).format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("Zulu")),
+                "expirationDate": surveyLink.expirationDate.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("Zulu")),
                 "linkType": this.surveyLink.linkType
             )
             header(
@@ -135,10 +135,12 @@ class Distribution {
             )
             message(
                 "libraryId": this.message.libraryId,
-                "messageId": this.message.messageId
+                "messageId": this.message.messageId,
+                    "messageText": this.message.messageText
             )
             recipients(
-                "mailingListId": this.recipients.mailingListId
+                "mailingListId": this.recipients.mailingListId,
+                    "contactId": this.recipients.contactId
             )
             sendDate sDate
         }
