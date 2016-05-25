@@ -2,8 +2,8 @@ apply plugin: 'groovy'
 apply plugin:'application'
 
 
-project.group = "FAU.Qualtrics"
-project.version = "1.0"
+project.group = "fau.qualtrics"
+project.version = "0.1"
 mainClassName = 'edu.fau.qualtrics.Qualtrics'
 
 sourceCompatibility=1.8
@@ -92,7 +92,7 @@ buildscript {
 }
 
 task fatJar(type: Jar) {
-    baseName = project.name + '-all'
+    baseName = "qualtrics-rest-client" + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
     manifest {
