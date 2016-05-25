@@ -24,8 +24,8 @@ import org.apache.commons.configuration.CompositeConfiguration
  *
  */
 class RESTPaths {
-    def baseUrl
-    def basePath = "/API"
+    String baseUrl
+    String basePath = "/API"
     def paths = [:]
     CompositeConfiguration config
 
@@ -50,6 +50,8 @@ class RESTPaths {
         paths["libraryMessages.get"] = basePath + "/v3/libraries/:libraryId/messages"
         paths["survey.list"] = basePath + "/v3/surveys"
         paths["survey.get"] = basePath + "/v3/surveys/:surveyId"
+        paths["response.post"] = basePath + "/v3/responseexports"
+        paths["response.get"] = basePath + "/v3/responseexports/:responseExportId/file"
 
 
     }

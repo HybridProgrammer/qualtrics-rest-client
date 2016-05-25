@@ -19,10 +19,10 @@ class Distributions {
     def data
     CacheStats cacheDistributions = new CacheStats()
     CacheStats cacheDistribution = new CacheStats()
+    def params = [:]
     String token
     String nextPage
     String surveyId
-    def params = [:]
 
     def distributions = []
     def distribution
