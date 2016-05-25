@@ -49,7 +49,7 @@ class Response {
      * @param format
      * @param filePath
      * @param millisecondsTimeout - defaults to 5 minutes, 300000 milliseconds
-     * @return
+     * @return Boolean
      */
     def exportZip(String format, String filePath, Long millisecondsTimeout = FIVE_MINUTES_IN_MILLISECONDS) {
         operationTimedOut = false
