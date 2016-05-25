@@ -2,6 +2,8 @@ package edu.fau.qualtrics.domain
 
 import edu.fau.qualtrics.services.ConfigurationManager
 import edu.fau.qualtrics.services.HttpClient
+import edu.fau.qualtrics.util.CacheStats
+import edu.fau.qualtrics.util.RESTPaths
 import org.apache.commons.configuration.CompositeConfiguration
 
 import static groovyx.net.http.Method.GET

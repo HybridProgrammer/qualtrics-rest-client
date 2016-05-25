@@ -1,4 +1,4 @@
-package edu.fau.qualtrics.domain
+package edu.fau.qualtrics.util
 
 import edu.fau.qualtrics.services.ConfigurationManager
 import org.apache.commons.configuration.CompositeConfiguration

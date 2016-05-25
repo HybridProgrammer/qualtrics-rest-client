@@ -2,6 +2,7 @@ package edu.fau.qualtrics.domain
 
 import edu.fau.qualtrics.services.ConfigurationManager
 import edu.fau.qualtrics.services.HttpClient
+import edu.fau.qualtrics.util.RESTPaths
 import groovy.json.JsonBuilder
 import groovy.transform.AutoClone
 import org.apache.commons.configuration.CompositeConfiguration
