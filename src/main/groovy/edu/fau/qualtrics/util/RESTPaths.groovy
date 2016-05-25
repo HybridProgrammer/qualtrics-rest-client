@@ -51,6 +51,7 @@ class RESTPaths {
         paths["survey.list"] = basePath + "/v3/surveys"
         paths["survey.get"] = basePath + "/v3/surveys/:surveyId"
         paths["response.post"] = basePath + "/v3/responseexports"
+        paths["response.progress"] = basePath + "/v3/responseexports/:responseExportId"
         paths["response.get"] = basePath + "/v3/responseexports/:responseExportId/file"
 
 
