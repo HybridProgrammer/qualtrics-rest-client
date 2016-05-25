@@ -76,11 +76,13 @@ class QualtricsProcessor {
         println survey
 
         Response response = new Response(survey.id)
-        response.exportZip(ExportTypes.CSV, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.CSV + ".zip")
-        response.exportZip(ExportTypes.CSV_2013, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.CSV_2013 + ".zip")
-        response.exportZip(ExportTypes.JSON, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.JSON + ".zip")
-        response.exportZip(ExportTypes.SPSS, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.SPSS + ".zip")
-        response.exportZip(ExportTypes.XML, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.XML + ".zip")
+//        response.exportZip(ExportTypes.CSV, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.CSV + ".zip")
+//        response.exportZip(ExportTypes.CSV_2013, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.CSV_2013 + ".zip")
+//        response.exportZip(ExportTypes.JSON, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.JSON + ".zip")
+//        response.exportZip(ExportTypes.SPSS, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.SPSS + ".zip")
+//        response.exportZip(ExportTypes.XML, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.XML + ".zip")
+
+        println response.getJson()
 
 
 //        println "Distributions for " + survey
