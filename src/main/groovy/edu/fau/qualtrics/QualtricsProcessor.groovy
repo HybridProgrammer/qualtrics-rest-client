@@ -1,9 +1,11 @@
 package edu.fau.qualtrics
 
 import edu.fau.qualtrics.domain.*
+import groovy.json.JsonBuilder
 
-//import edu.fau.util.FamisToWorkdayMapper
 import groovy.time.TimeCategory
+import groovy.util.slurpersupport.GPathResult
+import groovy.xml.XmlUtil
 
 /**
  * Created by jason on 4/1/16.
@@ -82,7 +84,10 @@ class QualtricsProcessor {
 //        response.exportZip(ExportTypes.SPSS, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.SPSS + ".zip")
 //        response.exportZip(ExportTypes.XML, "/Users/jason/temp/qualtrics/" + UUID.randomUUID() + "_" + ExportTypes.XML + ".zip")
 
-        println response.getJson()
+        println new JsonBuilder(response.getJson()).toPrettyString()
+        println XmlUtil.serialize((GPathResult)response.getXml())
+//        println response.getCsv()
+//        println response.getCsv2013()
 
 
 //        println "Distributions for " + survey

@@ -35,6 +35,7 @@ class Response {
     Integer operationPercentage
     String downloadFileURI
     def json
+    def xml
 
     Response(String surveyId, def params = [:], String token = null) {
         try {
@@ -52,30 +53,57 @@ class Response {
         this.params = params
     }
 
-    def getJson() {
+    def getReponses(String format) {
+        def responses
         String filePath = createTempDirectory().absolutePath + "/" + UUID.randomUUID() + ".zip"
-        if (exportZip(ExportTypes.JSON, filePath)) {
+        if (exportZip(format, filePath)) {
             FileInputStream fis = new FileInputStream(filePath);
 
             ZipInputStream zis = new ZipInputStream(fis);
             ZipEntry entry;
             // while there are entries I process them
             if ((entry = zis.getNextEntry()) != null) {
-//                System.out.println("entry: " + entry.getName() + ", " + entry.getSize());
-                // consume all the data from this entry
-                json = new JsonSlurper().parse(zis)
-//                while (zis.available() > 0) {
-//                    zis.read();
-//                }
-                // I could close the entry, but getNextEntry does it automatically
-                // zis.closeEntry()
+                switch (format) {
+                    case ExportTypes.JSON:
+                        json = new JsonSlurper().parse(zis)
+                        responses = json
+                        break
+                    case ExportTypes.XML:
+                        xml = new XmlSlurper().parse(zis)
+                        responses = xml
+                        break
+                    default:
+                        try {
+                            responses = IOUtils.toString(zis)
+                        }
+                        finally {
+                            IOUtils.closeQuietly(zis)
+                        }
+                        break
+                }
             }
             fis.close()
             File file = new File(filePath)
             file.delete()
         }
 
-        return json
+        return responses
+    }
+
+    def getJson() {
+        return getReponses(ExportTypes.JSON)
+    }
+
+    def getXml() {
+        return getReponses(ExportTypes.XML)
+    }
+
+    def getCsv() {
+        return getReponses(ExportTypes.CSV)
+    }
+
+    def getCsv2013() {
+        return getReponses(ExportTypes.CSV_2013)
     }
 
     /**
