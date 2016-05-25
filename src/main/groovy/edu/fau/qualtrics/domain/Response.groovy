@@ -22,7 +22,7 @@ class Response {
     public static final int ONE_SECOND_IN_MILLISECONDS = 1000
     public static final int FIVE_MINUTES_IN_MILLISECONDS = 300000
     final int BUFFER = 2048;
-    public static final String TEMP_DIRECTORY_NAME = "QualtricsLibrary"
+    public static final String TEMP_DIRECTORY_NAME = "QualtricsRESTClient"
     RESTPaths paths
     HttpClient httpClient
     String httpStatus
@@ -197,6 +197,7 @@ class Response {
             throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
         }
 
+        temp.deleteOnExit()
         return (temp);
     }
 }
