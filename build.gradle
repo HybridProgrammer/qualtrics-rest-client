@@ -4,7 +4,7 @@ apply plugin:'application'
 
 project.group = "FAU.Qualtrics"
 project.version = "1.0"
-mainClassName = 'edu.fau.Qualtrics'
+mainClassName = 'edu.fau.qualtrics.Qualtrics'
 
 sourceCompatibility=1.8
 targetCompatibility=1.8
