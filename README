@@ -9,35 +9,22 @@
 Build is managed through build.gradle
 
 Config create ~/qualtrics.properties file
-test.enabled=false
-program.name = "Qualtrics"
+
 qualtrics.token=
 qualtrics.baseURL=https://az1.qualtrics.com
-
-
-
-syslog.host=boc22vinyl.fau.edu
-syslog.port=514
-syslog.proto=udp
-
-log.console=true
-log.email.enabled=true
-log.email.simulate=true
-
-email.alerts.to=jheithof@fau.edu
-
-output.path=/Volumes/Transcend/IdeaProjects/FamisWdSync/output
 
 
 To build run
 chmod u+x build.sh
 ./build.sh
 
+This will package project into a jar and place it in build/libs
+
 
 To run
-java -jar build/libs/Qualtrics-all-1.0.jar
+java -jar build/libs/qualtrics-rest-client-all-0.1.jar
 
-This will package project into a jar and place it in build/libs
+
 
 
 VM Options:
