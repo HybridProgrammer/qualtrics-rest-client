@@ -13,6 +13,9 @@ Config create ~/qualtrics.properties file
 qualtrics.token=
 qualtrics.baseURL=https://az1.qualtrics.com
 
+# Instructions on how to generate a token
+# https://www.qualtrics.com/support/integrations/api-integration/api-integration/#GeneratingAnAPIToken
+
 
 To build run
 chmod u+x build.sh
