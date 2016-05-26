@@ -1,9 +1,9 @@
 ## Prerequisites
 
 * Gradle (originally built on version 2.10):
-** Installation instructions https://kb.fau.edu:8444/display/SOF/Gradle
+** Installation instructions https://kb.fau.edu/display/SOF/Gradle
 * Groovy (originally built on version 2.4.4):
-** Installation instructions https://kb.fau.edu:8444/display/SOF/Groovy
+** Installation instructions https://kb.fau.edu/display/SOF/Groovy
 
 ## Build Instructions
 Build is managed through build.gradle
