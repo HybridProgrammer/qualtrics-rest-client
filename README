@@ -27,9 +27,6 @@ This will package project into a jar and place it in build/libs
 To run
 java -jar build/libs/qualtrics-rest-client-all-0.1.jar
 
-
-
-
 VM Options:
 Enabling Logging
--Djava.util.logging.config.file=/Users/jason/IdeaProjects/Qualtrics/lib/log-config.properties
+-Djava.util.logging.config.file=/path-to-git-clone/Qualtrics/lib/log-config.properties
